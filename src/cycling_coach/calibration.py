@@ -48,13 +48,17 @@ def add_dynamics(ride: pd.DataFrame) -> pd.DataFrame:
     return ride.assign(speed_s=speed, accel=accel, rho=rho)
 
 
-def regression_windows(ride: pd.DataFrame, mass_kg: float) -> pd.DataFrame:
-    """Per-second regression terms averaged over non-overlapping windows."""
+def regression_windows(ride: pd.DataFrame, mass_kg: float, headwind=0.0) -> pd.DataFrame:
+    """Per-second regression terms averaged over non-overlapping windows.
+
+    `headwind` (m/s, scalar or per-second Series) changes the air speed in the drag term.
+    """
     r = add_dynamics(ride)
     v, grade = r["speed_s"], r["grade"]
+    air = v + headwind
     terms = pd.DataFrame({
         "y": ETA * r["power_w"] - gravity_power(mass_kg, v, grade) - accel_power(mass_kg, v, r["accel"]),
-        "x_aero": 0.5 * r["rho"] * v**3,
+        "x_aero": 0.5 * r["rho"] * air * np.abs(air) * v,
         "x_roll": mass_kg * G * v * np.cos(np.arctan(grade)),
         "power": r["power_w"], "speed": v, "grade": grade, "accel": r["accel"],
     })
@@ -65,6 +69,15 @@ def regression_windows(ride: pd.DataFrame, mass_kg: float) -> pd.DataFrame:
     out["n"] = g.size()
     keep = (out["n"] == WINDOW_S) & (out["power"] > MIN_POWER) & (out["accel"].abs() < MAX_ABS_ACCEL)
     return out[keep].drop(columns="n")
+
+
+def ride_split(ids, test_share: float = 0.2, seed: int = 42) -> set:
+    """Hold out whole rides, not seconds: neighbouring seconds of one ride are near
+    copies, so a per-second split would leak the test set into training."""
+    rng = np.random.default_rng(seed)
+    ids = np.array(ids).copy()
+    rng.shuffle(ids)
+    return set(ids[: int(len(ids) * test_share)].tolist())
 
 
 def fit_cda_crr(windows: pd.DataFrame) -> tuple[float, float]:

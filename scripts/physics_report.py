@@ -23,6 +23,7 @@ from cycling_coach.calibration import (
     fit_cda_crr,
     predict_windows,
     regression_windows,
+    ride_split,
     setup_for_bike,
 )
 from cycling_coach.physics import Setup, joules_to_kcal, power_components, stop_energy_j
@@ -40,15 +41,6 @@ def load_windows(rides: pd.DataFrame, mass: float) -> pd.DataFrame:
         w = regression_windows(pd.read_parquet(RIDES / f"{aid}.parquet"), mass)
         frames.append(w.assign(activity_id=aid))
     return pd.concat(frames, ignore_index=True)
-
-
-def ride_split(ids: np.ndarray, test_share: float = 0.2) -> set:
-    """Hold out whole rides, not seconds: neighbouring seconds of one ride are near
-    copies, so a per-second split would leak the test set into training."""
-    rng = np.random.default_rng(SEED)
-    ids = ids.copy()
-    rng.shuffle(ids)
-    return set(ids[: int(len(ids) * test_share)])
 
 
 def grouped_cv(windows: pd.DataFrame, k: int = 5) -> pd.DataFrame:
