@@ -220,7 +220,7 @@ heat has little time to build up; a long summer climb would be the better test.
 {md(rain_table)}
 
 Only {int(rainy.sum())} commutes had rain at the start, too few to conclude anything.
- Rainy days
+Rainy days
 probably show up mostly as *missing* commutes (another way to school).
 """
     (config.REPORTS_DIR / "weather.md").write_text(report, encoding="utf-8")

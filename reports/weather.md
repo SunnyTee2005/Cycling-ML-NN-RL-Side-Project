@@ -55,5 +55,5 @@ heat has little time to build up; a long summer climb would be the better test.
 | Rain (≥ 0.5 mm/h) | 4 | +0.6 km/h |
 
 Only 4 commutes had rain at the start, too few to conclude anything.
- Rainy days
+Rainy days
 probably show up mostly as *missing* commutes (another way to school).
