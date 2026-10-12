@@ -14,7 +14,7 @@ machine learning and reinforcement learning.
 | # | Step | Status |
 |---|------|--------|
 | 1 | Project skeleton | ✅ |
-| 2 | Parse all rides (`.fit`, `.fit.gz`, `.gpx`, `.gpx.gz`) into 1 Hz tables | ⬜ |
+| 2 | Parse all rides (`.fit`, `.fit.gz`, `.gpx`, `.gpx.gz`) into 1 Hz tables | ✅ |
 | 3 | Data inventory report | ⬜ |
 | 4 | Cleaning: stops / auto-pause detection, GPS spikes, smoothed elevation and grade | ⬜ |
 | 5 | Commute detection | ⬜ |
@@ -61,6 +61,17 @@ git clone https://github.com/SunnyTee2005/strava-data.git data/raw/strava
 ```
 
 Only `activities/`, `activities.csv` and `bikes.csv` are read.
+
+## Usage
+
+```bash
+python scripts/parse_all.py   # raw files -> data/interim/rides/<activity_id>.parquet
+```
+
+Each parsed ride has one row per second with: `timestamp` (UTC), `lat`, `lon`,
+`altitude_m`, `distance_m`, `speed_mps`, `power_w`, `heart_rate_bpm`,
+`cadence_rpm`, `temperature_c`, `grade_raw`, plus two flags:
+`is_filled` (no sample recorded that second) and `is_paused` (device auto-pause).
 
 ## Privacy
 
