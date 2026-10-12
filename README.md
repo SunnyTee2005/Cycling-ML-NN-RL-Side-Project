@@ -19,7 +19,7 @@ machine learning and reinforcement learning.
 | 4 | Cleaning: stops / auto-pause detection, GPS spikes, smoothed elevation and grade ([report](reports/cleaning.md)) | ✅ |
 | 5 | Commute detection | ✅ |
 | 6 | Traffic-light analytics: per-intersection stats, "red-light forecast" ([report](reports/traffic_lights.md)) | ✅ |
-| 7 | Commute time and route comparison, "leave-by" calculator | ⬜ |
+| 7 | Commute time and route comparison, "leave-by" calculator ([report](reports/commutes.md)) | ✅ |
 | 8 | Physics model + CdA/Crr calibration ("virtual power meter") | ⬜ |
 | 9 | Fitness from commutes, hard-braking hotspots | ⬜ |
 | 10 | Weather effects (wind, heat, rain) | ⬜ |
@@ -71,6 +71,8 @@ python scripts/clean_all.py   # cleaned rides, master ride table, stop events
 python scripts/report_cleaning.py
 python scripts/find_commutes.py   # home <-> high school / university
 python scripts/traffic_lights.py
+python scripts/commute_routes.py
+python scripts/leave_by.py --arrive 08:10   # when to leave home
 ```
 
 Each parsed ride has one row per second with: `timestamp` (UTC), `lat`, `lon`,
