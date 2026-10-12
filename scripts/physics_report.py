@@ -16,12 +16,14 @@ import pandas as pd
 
 from cycling_coach import config
 from cycling_coach.calibration import (
+    ASSUMED,
     add_dynamics,
     error_metrics,
     estimate_ride_power,
     fit_cda_crr,
     predict_windows,
     regression_windows,
+    setup_for_bike,
 )
 from cycling_coach.physics import Setup, joules_to_kcal, power_components, stop_energy_j
 from cycling_coach.plotting import MUTED, SERIES, TEXT_SECONDARY, label, save, style_axes, title
@@ -31,13 +33,6 @@ RIDES = config.PROCESSED_DIR / "rides"
 SEED = 42
 CLIMB_WINDOW_S = 600
 CLIMB_MIN_GRADE = 0.04
-
-# Bikes without a power meter: TCR fit transferred, or literature values (assumed).
-ASSUMED = {
-    "MATTS 6.40": {"cda": 0.45, "crr": 0.010},   # upright MTB, knobby tyres
-    "Ubike": {"cda": 0.55, "crr": 0.010},        # upright city bike
-}
-
 
 def load_windows(rides: pd.DataFrame, mass: float) -> pd.DataFrame:
     frames = []
@@ -70,10 +65,7 @@ def grouped_cv(windows: pd.DataFrame, k: int = 5) -> pd.DataFrame:
 
 
 def setup_for(bike: str, fitted: Setup) -> Setup:
-    mass = config.RIDER_MASS_KG + config.KIT_MASS_KG + config.BIKE_MASS_KG.get(bike, 8.0)
-    if bike in ASSUMED:
-        return Setup(mass, ASSUMED[bike]["cda"], ASSUMED[bike]["crr"])
-    return Setup(mass, fitted.cda, fitted.crr)  # TCR, Reacto (similar position), unknown
+    return setup_for_bike(bike, fitted.cda, fitted.crr)
 
 
 def best_climb_power(power: pd.Series, grade: pd.Series) -> float:

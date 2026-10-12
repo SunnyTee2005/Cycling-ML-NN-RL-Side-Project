@@ -14,13 +14,29 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import least_squares
 
-from cycling_coach.physics import ETA, G, Setup, air_density, gravity_power, accel_power, leg_power
+from cycling_coach import config
+from cycling_coach.physics import ETA, G, Setup, accel_power, air_density, gravity_power, leg_power
 
 WINDOW_S = 30
 MIN_SPEED = 3.0          # m/s
 MIN_POWER = 50.0         # W, skip coasting windows
 MAX_ABS_ACCEL = 0.3      # m/s^2 averaged over the window: steady riding only
 BOUNDS = ([0.15, 0.002], [0.60, 0.015])  # plausible CdA, Crr ranges
+
+# Bikes without a power meter use literature values (assumed); the others reuse
+# the TCR fit (the Reacto is ridden in a similar position).
+ASSUMED = {
+    "MATTS 6.40": {"cda": 0.45, "crr": 0.010},   # upright MTB, knobby tyres
+    "Ubike": {"cda": 0.55, "crr": 0.010},        # upright city bike
+}
+
+
+def setup_for_bike(bike: str, cda: float, crr: float) -> Setup:
+    """Mass from config; CdA/Crr from the fit unless the bike has assumed values."""
+    mass = config.RIDER_MASS_KG + config.KIT_MASS_KG + config.BIKE_MASS_KG.get(bike, 8.0)
+    if bike in ASSUMED:
+        return Setup(mass, ASSUMED[bike]["cda"], ASSUMED[bike]["crr"])
+    return Setup(mass, cda, crr)
 
 
 def add_dynamics(ride: pd.DataFrame) -> pd.DataFrame:

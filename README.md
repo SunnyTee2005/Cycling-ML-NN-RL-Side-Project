@@ -21,7 +21,7 @@ machine learning and reinforcement learning.
 | 6 | Traffic-light analytics: per-intersection stats, "red-light forecast" ([report](reports/traffic_lights.md)) | ✅ |
 | 7 | Commute time and route comparison, "leave-by" calculator ([report](reports/commutes.md)) | ✅ |
 | 8 | Physics model + CdA/Crr calibration ("virtual power meter") ([report](reports/physics.md)) | ✅ |
-| 9 | Fitness from commutes, hard-braking hotspots | ⬜ |
+| 9 | Fitness from commutes, hard-braking hotspots ([report](reports/fitness_safety.md)) | ✅ |
 | 10 | Weather effects (wind, heat, rain) | ⬜ |
 | 11 | Faster-route finder: recombine road segments I have ridden | ⬜ |
 | 12 | Yearly recap and final report | ⬜ |
@@ -74,6 +74,7 @@ python scripts/traffic_lights.py
 python scripts/commute_routes.py
 python scripts/leave_by.py --arrive 08:10   # when to leave home
 python scripts/physics_report.py
+python scripts/fitness_braking.py
 ```
 
 Each parsed ride has one row per second with: `timestamp` (UTC), `lat`, `lon`,
