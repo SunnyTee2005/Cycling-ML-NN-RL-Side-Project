@@ -1,0 +1,68 @@
+# AI Road-Cycling Coach
+
+A personal cycling analytics project built on **six years of my own ride data**
+(~1,800 rides, ~30,000 km, 2020–2026, Taichung, Taiwan).
+
+The long-term goal: **an AI that finds me a faster daily commute.**
+Along the way it builds the pieces a real coach would need: clean data,
+a physics model of riding, commute and traffic-light analytics, and later
+machine learning and reinforcement learning.
+
+## Roadmap
+
+### Phase 1: Data + physics (current)
+| # | Step | Status |
+|---|------|--------|
+| 1 | Project skeleton | ✅ |
+| 2 | Parse all rides (`.fit`, `.fit.gz`, `.gpx`, `.gpx.gz`) into 1 Hz tables | ⬜ |
+| 3 | Data inventory report | ⬜ |
+| 4 | Cleaning: stops / auto-pause detection, GPS spikes, smoothed elevation and grade | ⬜ |
+| 5 | Commute detection | ⬜ |
+| 6 | Traffic-light analytics: per-intersection stats, "red-light forecast" | ⬜ |
+| 7 | Commute time and route comparison, "leave-by" calculator | ⬜ |
+| 8 | Physics model + CdA/Crr calibration ("virtual power meter") | ⬜ |
+| 9 | Fitness from commutes, hard-braking hotspots | ⬜ |
+| 10 | Weather effects (wind, heat, rain) | ⬜ |
+| 11 | Faster-route finder: recombine road segments I have ridden | ⬜ |
+| 12 | Yearly recap and final report | ⬜ |
+
+### Phase 2: Machine learning
+Predict travel time on roads I have never ridden.
+
+### Phase 3: Reinforcement learning
+Learn an adaptive policy at intersections: wait at the red light or turn and detour?
+
+## Project structure
+
+```
+├── src/cycling_coach/   # reusable library code
+├── scripts/             # thin command-line entry points
+├── tests/               # pytest unit tests
+├── reports/             # generated reports (no raw GPS)
+└── data/                # gitignored: raw and processed ride data
+```
+
+## Setup (macOS)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+```
+
+## Data
+
+The raw data is a Strava bulk export kept in a **separate private repository**.
+Clone it into `data/raw/strava` (the whole `data/` folder is gitignored):
+
+```bash
+git clone https://github.com/SunnyTee2005/strava-data.git data/raw/strava
+```
+
+Only `activities/`, `activities.csv` and `bikes.csv` are read.
+
+## Privacy
+
+GPS traces reveal where someone lives. This repo never contains raw data, and
+any published map masks the area around ride start and end points.
