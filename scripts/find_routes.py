@@ -142,7 +142,7 @@ def plot_private(edges, paths_to_draw, grid, path) -> None:
     for (cells, color, name) in paths_to_draw:
         pts = np.array([grid.center(c) for c in cells])
         ax.plot(pts[:, 1], pts[:, 0], color=color, linewidth=2.5, label=name)
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="lower right")
     ax.set_aspect(1 / np.cos(np.radians(np.mean([p[0] for p in [grid.center(paths_to_draw[0][0][0])]]))))
     title(ax, "Usual vs suggested route — PRIVATE")
     save(fig, path)
