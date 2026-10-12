@@ -23,7 +23,7 @@ machine learning and reinforcement learning.
 | 8 | Physics model + CdA/Crr calibration ("virtual power meter") ([report](reports/physics.md)) | ✅ |
 | 9 | Fitness from commutes, hard-braking hotspots ([report](reports/fitness_safety.md)) | ✅ |
 | 10 | Weather effects (wind, heat, rain) ([report](reports/weather.md)) | ✅ |
-| 11 | Faster-route finder: recombine road segments I have ridden | ⬜ |
+| 11 | Faster-route finder: recombine road segments I have ridden ([report](reports/route_finder.md)) | ✅ |
 | 12 | Yearly recap and final report | ⬜ |
 
 ### Phase 2: Machine learning
@@ -76,6 +76,7 @@ python scripts/leave_by.py --arrive 08:10   # when to leave home
 python scripts/physics_report.py
 python scripts/fitness_braking.py
 python scripts/weather_effects.py
+python scripts/find_routes.py
 ```
 
 Each parsed ride has one row per second with: `timestamp` (UTC), `lat`, `lon`,
