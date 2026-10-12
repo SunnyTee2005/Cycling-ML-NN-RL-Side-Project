@@ -10,9 +10,6 @@ Writes data/interim/inventory.parquet (one row per ride, gitignored)
 
 from concurrent.futures import ProcessPoolExecutor
 
-import matplotlib
-
-matplotlib.use("Agg")  # render to files, no window
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -24,13 +21,11 @@ from cycling_coach.inventory import (
     is_in_taiwan,
     summarize_ride,
 )
+from cycling_coach.plotting import GRID, SERIES, TEXT_PRIMARY, TEXT_SECONDARY
 
 RIDES_DIR = config.INTERIM_DIR / "rides"
 FIGURES_DIR = config.REPORTS_DIR / "figures"
 
-# Validated categorical palette (fixed order) and text colours.
-SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]
-TEXT_PRIMARY, TEXT_SECONDARY, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 DEVICE_ORDER = ["Bryton Rider 420", "Garmin Forerunner 255", "Xiaomi watch", "GPX export", "Other"]
 
 
@@ -130,7 +125,7 @@ def plot_monthly_distance(rides: pd.DataFrame, path) -> None:
     bottom = pd.Series(0.0, index=km.index)
     x = km.index.to_timestamp()
     for device in devices:
-        color = SERIES_COLORS[DEVICE_ORDER.index(device)]
+        color = SERIES[DEVICE_ORDER.index(device)]
         ax.bar(x, km[device], bottom=bottom, width=25, color=color, label=device,
                edgecolor="white", linewidth=1)
         bottom += km[device]

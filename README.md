@@ -16,7 +16,7 @@ machine learning and reinforcement learning.
 | 1 | Project skeleton | ✅ |
 | 2 | Parse all rides (`.fit`, `.fit.gz`, `.gpx`, `.gpx.gz`) into 1 Hz tables | ✅ |
 | 3 | Data inventory report ([reports/inventory.md](reports/inventory.md)) | ✅ |
-| 4 | Cleaning: stops / auto-pause detection, GPS spikes, smoothed elevation and grade | ⬜ |
+| 4 | Cleaning: stops / auto-pause detection, GPS spikes, smoothed elevation and grade ([report](reports/cleaning.md)) | ✅ |
 | 5 | Commute detection | ⬜ |
 | 6 | Traffic-light analytics: per-intersection stats, "red-light forecast" | ⬜ |
 | 7 | Commute time and route comparison, "leave-by" calculator | ⬜ |
@@ -67,6 +67,8 @@ Only `activities/`, `activities.csv` and `bikes.csv` are read.
 ```bash
 python scripts/parse_all.py   # raw files -> data/interim/rides/<activity_id>.parquet
 python scripts/inventory.py   # per-ride summary + reports/inventory.md
+python scripts/clean_all.py   # cleaned rides, master ride table, stop events
+python scripts/report_cleaning.py
 ```
 
 Each parsed ride has one row per second with: `timestamp` (UTC), `lat`, `lon`,
