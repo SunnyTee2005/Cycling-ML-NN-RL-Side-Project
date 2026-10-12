@@ -11,3 +11,6 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# Maps and anything with locations
+reports/private/
